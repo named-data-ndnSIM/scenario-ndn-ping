@@ -14,7 +14,7 @@ The code should also work with the latest version of ndnSIM, but it is not guara
     git clone https://github.com/named-data-ndnSIM/ndnSIM ns-3/src/ndnSIM
     (cd ns-3/src/ndnSIM; git checkout ndnSIM-2.1)
 
-    git clone https://github.com/named-data-ndnSIM/scenario-ndn-ping
+    git clone --recursive https://github.com/named-data-ndnSIM/scenario-ndn-ping
 
     cd ns-3
     ./waf configure -d optimized

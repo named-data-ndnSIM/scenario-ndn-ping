@@ -68,11 +68,23 @@ def configure(conf):
 def build (bld):
     deps =  ' '.join (['ns3_'+dep for dep in MANDATORY_NS3_MODULES + OTHER_NS3_MODULES]).upper ()
 
+    ndnTools = bld.objects (
+        target = "ndn-tools",
+        features = ["cxx"],
+        source = bld.path.ant_glob(['ndn-tools/core/**/*.cpp',
+                                    'ndn-tools/tools/ping/**/*.cpp'],
+                                    excl=['**/ndn-ping.cpp',
+                                    '**/ndn-ping-server.cpp']),
+        includes = "ndn-tools",
+        export_includes = "ndn-tools",
+        use = deps
+        )
+
     common = bld.objects (
         target = "extensions",
         features = ["cxx"],
         source = bld.path.ant_glob(['extensions/**/*.cc', 'extensions/**/*.cpp']),
-        use = deps,
+        use = deps + " ndn-tools"
         )
 
     for scenario in bld.path.ant_glob (['scenarios/*.cc']):
@@ -82,7 +94,8 @@ def build (bld):
             features = ['cxx'],
             source = [scenario],
             use = deps + " extensions",
-            includes = "extensions"
+            includes = "extensions",
+            export_includes = "extensions"
             )
 
     for scenario in bld.path.ant_glob (['scenarios/*.cpp']):
@@ -91,8 +104,7 @@ def build (bld):
             target = name,
             features = ['cxx'],
             source = [scenario],
-            use = deps + " extensions",
-            includes = "extensions"
+            use = deps + " extensions ndn-tools"
             )
 
 def shutdown (ctx):

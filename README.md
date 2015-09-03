@@ -49,3 +49,9 @@ variable.
 Running
 =======
 
+You can run the ping scenario by typing
+
+    ./waf --run ping-simple
+
+    # or
+    # ./build/ping-simple
